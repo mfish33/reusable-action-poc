@@ -16,7 +16,7 @@ runs:
         path: ./temp-api-spec-deploy
         
     - name: change folders
-       run: cd temp-api-spec-deploy
+      run: cd temp-api-spec-deploy
 
     - name: Get changed files
       id: changed-files
