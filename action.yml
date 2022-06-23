@@ -15,7 +15,7 @@ runs:
         fetch-depth: 0
         path: ./temp-api-spec-deploy
         
-     - name: change folders
+    - name: change folders
        run: cd temp-api-spec-deploy
 
     - name: Get changed files
