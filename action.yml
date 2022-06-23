@@ -1,0 +1,34 @@
+name: 'Upload API'
+description: 'Uploads Api to viewing service'
+inputs:
+  file-path:
+    description: 'path to open api spec'
+    required: true
+  api-key:
+    description: 'api-key to viewing server'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+        path: ./temp-api-spec-deploy
+        
+     - name: change folders
+       run: cd temp-api-spec-deploy
+
+    - name: Get changed files
+      id: changed-files
+      uses: tj-actions/changed-files@v23
+
+    - name: On Open API changed
+      if: contains(steps.changed-files.outputs.modified_files, 'open-api.json')
+      run: |
+        export SPEC=`jq --raw-input --slurp < open-api.json`
+        curl -d "{\"spec\":$SPEC,\"apiKey\": \"blah-blah-blah\"}" -H 'Content-Type: application/json' https://8380-2600-387-1-813-00-72.ngrok.io/api-upload
+        
+    - name: cleanup
+      run: |
+        cd ..
+        rm -rf temp-api-spec-deploy
