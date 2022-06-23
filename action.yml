@@ -9,12 +9,7 @@ inputs:
     required: true
 runs:
   using: "composite"
-  steps:
-    - uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
-        path: ./temp-api-spec-deploy
-        
+  steps:        
     - name: Get changed files
       id: changed-files
       uses: tj-actions/changed-files@v23
@@ -24,10 +19,4 @@ runs:
       run: |
         export SPEC=`jq --raw-input --slurp < ${{ inputs.file-path }}`
         curl -d "{\"spec\":$SPEC,\"apiKey\": \"${{ inputs.api-key }}\"}" -H 'Content-Type: application/json' https://8380-2600-387-1-813-00-72.ngrok.io/api-upload
-      shell: bash
-
-    - name: cleanup
-      run: |
-        cd ..
-        rm -rf temp-api-spec-deploy
       shell: bash
